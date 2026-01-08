@@ -23,20 +23,20 @@ public class HwApplication {
         return new CommandLineRunner() {
             @Override
             public void run(String... args) throws Exception {
-                Book book = new Book();
-                book.setTitle("Game of Thrones");
-                book.setAuthor("George Martin");
-                book.setIsbn("978-0-00-820910-0");
-                book.setPrice(BigDecimal.valueOf(100));
+                Book bookGameOfThrones = new Book();
+                bookGameOfThrones.setTitle("Game of Thrones");
+                bookGameOfThrones.setAuthor("George Martin");
+                bookGameOfThrones.setIsbn("978-0-00-820910-0");
+                bookGameOfThrones.setPrice(BigDecimal.valueOf(100));
 
-                Book book2 = new Book();
-                book2.setTitle("Lord of the Rings");
-                book2.setAuthor("J. R. R. Tolkien");
-                book2.setIsbn("978-0544003415");
-                book2.setPrice(BigDecimal.valueOf(150));
+                Book bookRings = new Book();
+                bookRings.setTitle("Lord of the Rings");
+                bookRings.setAuthor("J. R. R. Tolkien");
+                bookRings.setIsbn("978-0544003415");
+                bookRings.setPrice(BigDecimal.valueOf(150));
 
-                bookService.save(book);
-                bookService.save(book2);
+                bookService.save(bookGameOfThrones);
+                bookService.save(bookRings);
 
                 System.out.println(bookService.findAll());
             }
