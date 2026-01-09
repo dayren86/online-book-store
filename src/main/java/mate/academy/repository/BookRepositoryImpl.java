@@ -1,12 +1,15 @@
 package mate.academy.repository;
 
 import java.util.List;
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import mate.academy.exception.DataProcessingException;
 import mate.academy.model.Book;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -40,6 +43,16 @@ public class BookRepositoryImpl implements BookRepository {
     public List<Book> getAll() {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("from Book", Book.class).getResultList();
+        } catch (Exception e) {
+            throw new DataProcessingException("Can't get all Books", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Book book = session.find(Book.class, id);
+            return Optional.ofNullable(book);
         } catch (Exception e) {
             throw new DataProcessingException("Can't get all Books", e);
         }
