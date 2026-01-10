@@ -52,7 +52,7 @@ public class BookRepositoryImpl implements BookRepository {
             Book book = session.find(Book.class, id);
             return Optional.ofNullable(book);
         } catch (Exception e) {
-            throw new DataProcessingException("Can't get all Books", e);
+            throw new DataProcessingException("Can't find book by id: " + id, e);
         }
     }
 }
