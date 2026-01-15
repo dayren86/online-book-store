@@ -4,7 +4,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.CreateBookRequestDto;
-import mate.academy.dto.UpdateBookDto;
 import mate.academy.model.Book;
 import mate.academy.service.BookService;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +38,8 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
-    public BookDto updateBook(@PathVariable Long id, @RequestBody UpdateBookDto updateBookDto) {
+    public BookDto updateBook(@PathVariable Long id,
+                              @RequestBody CreateBookRequestDto updateBookDto) {
         return bookService.updateBook(id, updateBookDto);
     }
 
