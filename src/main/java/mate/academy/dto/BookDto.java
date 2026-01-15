@@ -1,8 +1,8 @@
 package mate.academy.dto;
 
-import java.math.BigDecimal;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
