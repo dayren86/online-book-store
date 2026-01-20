@@ -8,6 +8,8 @@ import mate.academy.dto.BookDto;
 import mate.academy.dto.CreateBookRequestDto;
 import mate.academy.model.Book;
 import mate.academy.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
