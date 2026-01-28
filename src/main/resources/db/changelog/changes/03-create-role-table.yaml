@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-roles-table
+      author: mateacademy
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role_name
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+  - changeSet:
+      id: create_users_roles_column
+      author: mateacademy
+      changes:
+        - createTable:
+            tableName: users_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_users_id
+                    references: users(id)
+              - column:
+                  name: roles_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_roles_id
+                    references: roles(id)
