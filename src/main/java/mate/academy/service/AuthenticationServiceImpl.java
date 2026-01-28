@@ -19,11 +19,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public UserResponseDto register(UserRegistrationRequestDto registrationDto)
             throws RegistrationException {
         if (userRepository.findByEmail(registrationDto.getEmail()).isPresent()) {
-            throw new RegistrationException("Email already exist");
+            throw new RegistrationException("Email already exist: " + registrationDto.getEmail());
         }
         User userModel = userMapper.toUserModel(registrationDto);
         userRepository.save(userModel);
-        System.out.println("test");
         return userMapper.toDto(userModel);
     }
 }
