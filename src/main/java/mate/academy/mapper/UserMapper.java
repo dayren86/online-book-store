@@ -7,20 +7,18 @@ import mate.academy.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Mapper(config = MapperConfig.class)
 public interface UserMapper {
 
-//    @Mapping(qualifiedByName = "encode", target = "password")
+    @Mapping(qualifiedByName = "encode", target = "password")
     User toUserModel(UserRegistrationRequestDto registration);
 
-//    @Named("encode")
-//    default String encodePassword(String password) {
-//        PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
-//        return encoder.encode(password);
-//    }
+    @Named("encode")
+    default String encodePassword(String password) {
+        return new BCryptPasswordEncoder().encode(password);
+    }
 
     UserResponseDto toDto(User user);
 }
