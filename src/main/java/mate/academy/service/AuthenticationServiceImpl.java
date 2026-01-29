@@ -23,7 +23,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
         User userModel = userMapper.toUserModel(registrationDto);
         userRepository.save(userModel);
-        System.out.println("test");
         return userMapper.toDto(userModel);
     }
 }

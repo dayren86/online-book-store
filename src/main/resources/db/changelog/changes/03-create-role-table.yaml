@@ -1,7 +1,7 @@
 databaseChangeLog:
   - changeSet:
       id: create-roles-table
-      author: mateacademy
+      author: andreyfominukh
       changes:
         - createTable:
             tableName: roles
@@ -18,10 +18,6 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     unique: true
-  - changeSet:
-      id: create_users_roles_column
-      author: mateacademy
-      changes:
         - createTable:
             tableName: users_roles
             columns:
