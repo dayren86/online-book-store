@@ -28,7 +28,7 @@ databaseChangeLog:
                     foreignKeyName: fk_users_id
                     references: users(id)
               - column:
-                  name: roles_id
+                  name: role_id
                   type: bigint
                   constraints:
                     foreignKeyName: fk_roles_id
