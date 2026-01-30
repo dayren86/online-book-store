@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-roles-table
+      author: andreyfominukh
+      changes:
+        - insert:
+            tableName: roles
+            columns:
+              - column: {name: role_name, value: "ADMIN"}
+        - insert:
+            tableName: roles
+            columns:
+              - column: { name: role_name, value: "USER" }
+        - insert:
+            tableName: users
+            columns:
+              - column: {name: email, value: "bob@email.com"}
+              - column: {name: password, value: "$2a$10$evUfjykPCf8CxevaBK7WouA7iAH/Qh3Y32pxd1eFRYaRVHwVHgPR."}
+              - column: {name: first_name, value: "bob"}
+              - column: {name: last_name, value: "bob"}
+        - insert:
+            tableName: users
+            columns:
+              - column: { name: email, value: "ned@email.com" }
+              - column: { name: password, value: "$2a$10$evUfjykPCf8CxevaBK7WouA7iAH/Qh3Y32pxd1eFRYaRVHwVHgPR." }
+              - column: { name: first_name, value: "ned" }
+              - column: { name: last_name, value: "ned" }
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: { name: user_id, value: "1" }
+              - column: { name: role_id, value: "1" }
+        - insert:
+            tableName: users_roles
+            columns:
+              - column: { name: user_id, value: "2" }
+              - column: { name: role_id, value: "2" }
