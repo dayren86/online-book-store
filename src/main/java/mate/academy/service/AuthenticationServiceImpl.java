@@ -13,7 +13,6 @@ import mate.academy.security.JwtUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -39,7 +38,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public UserLoginResponseDto authenticate(UserLoginRequestDto requestDto) {
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(requestDto.getEmail(), requestDto.getPassword())
+                new UsernamePasswordAuthenticationToken(
+                        requestDto.getEmail(), requestDto.getPassword())
         );
 
         String token = jwtUtil.generateToken(requestDto.getEmail());
