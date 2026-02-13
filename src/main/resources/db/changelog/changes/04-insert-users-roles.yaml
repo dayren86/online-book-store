@@ -15,14 +15,14 @@ databaseChangeLog:
             tableName: users
             columns:
               - column: {name: email, value: "bob@email.com"}
-              - column: {name: password, value: "$2a$10$evUfjykPCf8CxevaBK7WouA7iAH/Qh3Y32pxd1eFRYaRVHwVHgPR."}
+              - column: {name: password, value: "$2a$10$et34ycySw9IMFsU8UBkbYuuKaIXgs5ob/Amc8G3vYJ5useIpnLxJu"}
               - column: {name: first_name, value: "bob"}
               - column: {name: last_name, value: "bob"}
         - insert:
             tableName: users
             columns:
               - column: { name: email, value: "ned@email.com" }
-              - column: { name: password, value: "$2a$10$evUfjykPCf8CxevaBK7WouA7iAH/Qh3Y32pxd1eFRYaRVHwVHgPR." }
+              - column: { name: password, value: "$2a$10$et34ycySw9IMFsU8UBkbYuuKaIXgs5ob/Amc8G3vYJ5useIpnLxJu" }
               - column: { name: first_name, value: "ned" }
               - column: { name: last_name, value: "ned" }
         - insert:

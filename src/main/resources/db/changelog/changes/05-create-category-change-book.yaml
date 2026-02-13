@@ -1,0 +1,82 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-category-change-book
+      author: andreyfominukh
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    unique: true
+              - column:
+                  name: description
+                  type: varchar(255)
+              - column:
+                  name: is_deleted
+                  type: bit
+                  defaultValueBoolean: false
+                  constraints:
+                    nullable: false
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_books_id
+                    references: books(id)
+              - column:
+                  name: category_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: fk_categories_id
+                    references: categories(id)
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: "Fiction" }
+              - column: { name: description, value: "Fiction books" }
+        - insert:
+            tableName: categories
+            columns:
+              - column: { name: name, value: "Fantasy" }
+              - column: { name: description, value: "Fantasy books" }
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "1984" }
+              - column: { name: author, value: "George Orwell" }
+              - column: { name: isbn, value: "9783844908213" }
+              - column: { name: price, value: "15.50" }
+              - column: { name: description, value: "Totalitarian superstate, Oceania, ruled by the omnipresent Party and its figurehead" }
+              - column: { name: cover_image, value: "http://example.com/cover2.jpg" }
+        - insert:
+            tableName: books
+            columns:
+              - column: { name: title, value: "The Lord of the Rings" }
+              - column: { name: author, value: "JGeorge R.R. Martin" }
+              - column: { name: isbn, value: "9788845292613" }
+              - column: { name: price, value: "20" }
+              - column: { name: description, value: "Epic high-fantasy masterpiece detailing the quest to destroy the One Ring" }
+              - column: { name: cover_image, value: "http://example.com/cover.jpg" }
+        - insert:
+            tableName: books_categories
+            columns:
+              - column: { name: book_id, value: "1" }
+              - column: { name: category_id, value: "1" }
+        - insert:
+            tableName: books_categories
+            columns:
+              - column: { name: book_id, value: "2" }
+              - column: { name: category_id, value: "2" }
