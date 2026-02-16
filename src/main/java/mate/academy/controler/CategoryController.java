@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.dto.book.BookDtoWithCategory;
+import mate.academy.dto.book.BookDtoWithoutCategory;
 import mate.academy.dto.category.CategoryDto;
 import mate.academy.dto.category.CreateCategoryDto;
 import mate.academy.model.Category;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @Tag(name = "Category api")
 @RestController
-@RequestMapping("/category")
+@RequestMapping("/categories")
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
@@ -74,7 +74,7 @@ public class CategoryController {
     @Operation(summary = "Get all books by category")
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/{id}/books")
-    public List<BookDtoWithCategory> getBooksByCategoryId(@PathVariable Long id) {
+    public List<BookDtoWithoutCategory> getBooksByCategoryId(@PathVariable Long id) {
         return bookService.findAllByCategoryId(id);
     }
 }

@@ -2,7 +2,7 @@ package mate.academy.service;
 
 import java.util.List;
 import mate.academy.dto.book.BookDto;
-import mate.academy.dto.book.BookDtoWithCategory;
+import mate.academy.dto.book.BookDtoWithoutCategory;
 import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.model.Book;
 import org.springframework.data.domain.Page;
@@ -19,5 +19,5 @@ public interface BookService {
 
     void deleteBookById(Long id);
 
-    List<BookDtoWithCategory> findAllByCategoryId(Long categoryId);
+    List<BookDtoWithoutCategory> findAllByCategoryId(Long categoryId);
 }
