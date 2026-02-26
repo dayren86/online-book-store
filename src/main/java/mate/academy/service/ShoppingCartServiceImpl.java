@@ -1,5 +1,6 @@
 package mate.academy.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.cart.AddCartItemDto;
 import mate.academy.dto.cart.ShoppingCartDto;
@@ -8,12 +9,14 @@ import mate.academy.mapper.ShoppingCartMapper;
 import mate.academy.model.Book;
 import mate.academy.model.CartItem;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.repository.BookRepository;
 import mate.academy.repository.CartItemRepository;
 import mate.academy.repository.ShoppingCartRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
@@ -28,7 +31,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void addBookToShoppingCart(String emailUser, AddCartItemDto addCartItemDto) {
+    public ShoppingCartDto addBookToShoppingCart(String emailUser, AddCartItemDto addCartItemDto) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
 
         Book book = bookRepository.findById(addCartItemDto.getBookId()).orElseThrow(
@@ -41,6 +44,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         cartItem.setBook(book);
         cartItem.setQuantity(addCartItemDto.getQuantity());
         cartItemRepository.save(cartItem);
+        return shoppingCartMapper.toDto(shoppingCartByUser);
     }
 
     @Override
@@ -56,7 +60,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteCartItem(String emailUser, Long id) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
         CartItem findCartItem = findCartItem(shoppingCartByUser, id);
-        cartItemRepository.delete(findCartItem);
+        shoppingCartByUser.getCartItems().remove(findCartItem);
+        cartItemRepository.deleteById(findCartItem.getId());
+    }
+
+    @Override
+    public void createShoppingCartForUser(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartRepository.save(shoppingCart);
     }
 
     private ShoppingCart findShoppingCartByUser(String emailUser) {
