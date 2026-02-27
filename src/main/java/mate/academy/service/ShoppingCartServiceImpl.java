@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import mate.academy.dto.cart.AddCartItemDto;
 import mate.academy.dto.cart.ShoppingCartDto;
 import mate.academy.exception.EntityNotFoundException;
+import mate.academy.mapper.CartItemMapper;
 import mate.academy.mapper.ShoppingCartMapper;
 import mate.academy.model.Book;
 import mate.academy.model.CartItem;
@@ -23,6 +24,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final CartItemRepository cartItemRepository;
     private final BookRepository bookRepository;
     private final ShoppingCartMapper shoppingCartMapper;
+    private final CartItemMapper cartItemMapper;
 
     @Override
     public ShoppingCartDto getShoppingCat(String emailUser) {
@@ -39,29 +41,29 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         + addCartItemDto.getBookId())
         );
 
-        CartItem cartItem = new CartItem();
-        cartItem.setShoppingCart(shoppingCartByUser);
-        cartItem.setBook(book);
-        cartItem.setQuantity(addCartItemDto.getQuantity());
-        cartItemRepository.save(cartItem);
+        CartItem newCartItem = cartItemMapper.createNewCartItem(
+                shoppingCartByUser,
+                book,
+                addCartItemDto.getQuantity());
+        cartItemRepository.save(newCartItem);
         return shoppingCartMapper.toDto(shoppingCartByUser);
     }
 
     @Override
     public ShoppingCartDto updateQuantity(String emailUser, Long id, int quantity) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
-        CartItem findCartItem = findCartItem(shoppingCartByUser, id);
-        findCartItem.setQuantity(quantity);
-        cartItemRepository.save(findCartItem);
+        CartItem cartItem = findCartItem(shoppingCartByUser, id);
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
         return shoppingCartMapper.toDto(shoppingCartByUser);
     }
 
     @Override
     public void deleteCartItem(String emailUser, Long id) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
-        CartItem findCartItem = findCartItem(shoppingCartByUser, id);
-        shoppingCartByUser.getCartItems().remove(findCartItem);
-        cartItemRepository.deleteById(findCartItem.getId());
+        CartItem cartItem = findCartItem(shoppingCartByUser, id);
+        shoppingCartByUser.getCartItems().remove(cartItem);
+        cartItemRepository.deleteById(cartItem.getId());
     }
 
     @Override
