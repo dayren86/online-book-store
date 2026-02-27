@@ -1,9 +1,15 @@
 package mate.academy.service;
 
-import mate.academy.model.Order;
+import java.util.List;
+import mate.academy.dto.order.OrderDTo;
+import mate.academy.dto.order.OrderItemDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface OrdersService {
-    Order getOrderByUser(String emailUser);
+    Page<OrderDTo> getOrdersByUser(String emailUser, Pageable pageable);
 
-    void addOrderFromShoppingCart(String emailUser, String shippingAddress);
+    OrderDTo addOrderFromShoppingCart(String emailUser, String shippingAddress);
+
+    List<OrderItemDto> findOrderItemsByOrderId(String emailUser, Long id);
 }
