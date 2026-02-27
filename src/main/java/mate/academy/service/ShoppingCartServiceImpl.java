@@ -1,25 +1,30 @@
 package mate.academy.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.cart.AddCartItemDto;
 import mate.academy.dto.cart.ShoppingCartDto;
 import mate.academy.exception.EntityNotFoundException;
+import mate.academy.mapper.CartItemMapper;
 import mate.academy.mapper.ShoppingCartMapper;
 import mate.academy.model.Book;
 import mate.academy.model.CartItem;
 import mate.academy.model.ShoppingCart;
+import mate.academy.model.User;
 import mate.academy.repository.BookRepository;
 import mate.academy.repository.CartItemRepository;
 import mate.academy.repository.ShoppingCartRepository;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final CartItemRepository cartItemRepository;
     private final BookRepository bookRepository;
     private final ShoppingCartMapper shoppingCartMapper;
+    private final CartItemMapper cartItemMapper;
 
     @Override
     public ShoppingCartDto getShoppingCat(String emailUser) {
@@ -28,7 +33,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void addBookToShoppingCart(String emailUser, AddCartItemDto addCartItemDto) {
+    public ShoppingCartDto addBookToShoppingCart(String emailUser, AddCartItemDto addCartItemDto) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
 
         Book book = bookRepository.findById(addCartItemDto.getBookId()).orElseThrow(
@@ -36,27 +41,36 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                         + addCartItemDto.getBookId())
         );
 
-        CartItem cartItem = new CartItem();
-        cartItem.setShoppingCart(shoppingCartByUser);
-        cartItem.setBook(book);
-        cartItem.setQuantity(addCartItemDto.getQuantity());
-        cartItemRepository.save(cartItem);
+        CartItem newCartItem = cartItemMapper.createNewCartItem(
+                shoppingCartByUser,
+                book,
+                addCartItemDto.getQuantity());
+        cartItemRepository.save(newCartItem);
+        return shoppingCartMapper.toDto(shoppingCartByUser);
     }
 
     @Override
     public ShoppingCartDto updateQuantity(String emailUser, Long id, int quantity) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
-        CartItem findCartItem = findCartItem(shoppingCartByUser, id);
-        findCartItem.setQuantity(quantity);
-        cartItemRepository.save(findCartItem);
+        CartItem cartItem = findCartItem(shoppingCartByUser, id);
+        cartItem.setQuantity(quantity);
+        cartItemRepository.save(cartItem);
         return shoppingCartMapper.toDto(shoppingCartByUser);
     }
 
     @Override
     public void deleteCartItem(String emailUser, Long id) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
-        CartItem findCartItem = findCartItem(shoppingCartByUser, id);
-        cartItemRepository.delete(findCartItem);
+        CartItem cartItem = findCartItem(shoppingCartByUser, id);
+        shoppingCartByUser.getCartItems().remove(cartItem);
+        cartItemRepository.deleteById(cartItem.getId());
+    }
+
+    @Override
+    public void createShoppingCartForUser(User user) {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setUser(user);
+        shoppingCartRepository.save(shoppingCart);
     }
 
     private ShoppingCart findShoppingCartByUser(String emailUser) {

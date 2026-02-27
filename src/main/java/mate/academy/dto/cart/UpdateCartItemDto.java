@@ -1,12 +1,12 @@
 package mate.academy.dto.cart;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CartItemUpdateQuantityDto {
-    @NotNull
+public class UpdateCartItemDto {
+    @Positive
     private int quantity;
 }

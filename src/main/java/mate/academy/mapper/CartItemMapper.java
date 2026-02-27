@@ -1,0 +1,20 @@
+package mate.academy.mapper;
+
+import mate.academy.config.MapperConfig;
+import mate.academy.dto.cart.CartItemDto;
+import mate.academy.model.Book;
+import mate.academy.model.CartItem;
+import mate.academy.model.ShoppingCart;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+
+@Mapper(config = MapperConfig.class)
+public interface CartItemMapper {
+    @Mapping(target = "bookId", source = "book.id")
+    @Mapping(target = "bookTitle", source = "book.title")
+    CartItemDto toDto(CartItem cartItem);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "deleted", ignore = true)
+    CartItem createNewCartItem(ShoppingCart shoppingCart, Book book, Integer quantity);
+}
