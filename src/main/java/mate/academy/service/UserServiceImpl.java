@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ShoppingCartService shoppingCartService;
     private final UserMapper userMapper;
 
     @Override
@@ -23,6 +24,9 @@ public class UserServiceImpl implements UserService {
         }
         User userModel = userMapper.toUserModel(registrationDto);
         userRepository.save(userModel);
+
+        shoppingCartService.createShoppingCartForUser(userModel);
+
         return userMapper.toDto(userModel);
     }
 }
