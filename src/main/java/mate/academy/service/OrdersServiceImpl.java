@@ -8,6 +8,8 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.order.OrderDTo;
 import mate.academy.dto.order.OrderItemDto;
+import mate.academy.dto.order.UpdateStatusDto;
+import mate.academy.exception.EntityNotFoundException;
 import mate.academy.mapper.OrderMapper;
 import mate.academy.model.CartItem;
 import mate.academy.model.Order;
@@ -38,6 +40,10 @@ public class OrdersServiceImpl implements OrdersService {
     public OrderDTo addOrderFromShoppingCart(String emailUser, String shippingAddress) {
         ShoppingCart shoppingCartByUser = findShoppingCartByUser(emailUser);
 
+        if (shoppingCartByUser.getCartItems().isEmpty()) {
+            throw new EntityNotFoundException("Shopping cart is empty for user: " + emailUser);
+        }
+
         Order order = new Order();
         order.setUser(shoppingCartByUser.getUser());
         order.setStatus(Order.Status.PENDING);
@@ -65,15 +71,41 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public List<OrderItemDto> findOrderItemsByOrderId(String emailUser, Long id) {
-        Order order = orderRepository.findOrderByUserEmailAndId(emailUser, id);
+    public void updateStatus(Long id, UpdateStatusDto status) {
+        Order order = orderRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Cant find order by id: " + id));
+        order.setStatus(status.getStatus());
+        orderRepository.save(order);
+    }
+
+    @Override
+    public List<OrderItemDto> findOrderItemsByOrderId(String emailUser, Long orderId) {
+        Order order = findOrder(emailUser, orderId);
         return order.getOrderItems()
                 .stream()
                 .map(orderMapper::orderItemToDto)
                 .toList();
     }
 
+    @Override
+    public OrderItemDto getSpecificItem(String emailUser, Long orderId, Long id) {
+        Order order = findOrder(emailUser, orderId);
+
+        OrderItem findOrderItem = order.getOrderItems().stream()
+                .filter(orderItem -> orderItem.getId().equals(id))
+                .findFirst()
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Cant find order item by id: " + id));
+        return orderMapper.orderItemToDto(findOrderItem);
+    }
+
     private ShoppingCart findShoppingCartByUser(String emailUser) {
         return shoppingCartRepository.findByUserEmail(emailUser);
+    }
+
+    private Order findOrder(String emailUser, Long orderId) {
+        return orderRepository.findOrderByUserEmailAndId(emailUser, orderId)
+                .orElseThrow(
+                        () -> new EntityNotFoundException("Can't find order by id: " + orderId));
     }
 }

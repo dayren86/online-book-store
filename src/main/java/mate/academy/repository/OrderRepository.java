@@ -1,5 +1,6 @@
 package mate.academy.repository;
 
+import java.util.Optional;
 import mate.academy.model.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,5 +14,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Page<Order> findByUserEmail(String userEmail, Pageable pageable);
 
     @EntityGraph(attributePaths = {"orderItems"})
-    Order findOrderByUserEmailAndId(String userEmail, Long id);
+    Optional<Order> findOrderByUserEmailAndId(String userEmail, Long id);
 }
