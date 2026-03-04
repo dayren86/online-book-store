@@ -37,7 +37,7 @@ public class Order {
     private User user;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private OrderStatus status;
     @Column(nullable = false)
     private BigDecimal total;
     @Column(nullable = false)
@@ -49,7 +49,7 @@ public class Order {
     @Column(nullable = false)
     private boolean isDeleted = false;
 
-    public enum Status {
+    public enum OrderStatus {
         PENDING,
         DELIVERED,
         COMPLETED

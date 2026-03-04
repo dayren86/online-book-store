@@ -9,5 +9,5 @@ import mate.academy.model.Order;
 @Setter
 public class UpdateStatusDto {
     @NotNull
-    private Order.Status status;
+    private Order.OrderStatus status;
 }

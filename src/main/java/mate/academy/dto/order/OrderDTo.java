@@ -14,5 +14,5 @@ public class OrderDTo {
     private Set<OrderItemDto> orderItemsDto;
     private String orderDate;
     private BigDecimal total;
-    private Order.Status status;
+    private Order.OrderStatus status;
 }
