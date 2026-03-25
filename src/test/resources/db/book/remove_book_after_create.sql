@@ -1,0 +1,1 @@
+UPDATE books SET is_deleted = true WHERE id=3
