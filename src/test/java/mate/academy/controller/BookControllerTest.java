@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import mate.academy.TestDataHelper;
 import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.CreateBookRequestDto;
 import mate.academy.model.Book;
@@ -23,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import java.math.BigDecimal;
 import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -40,11 +40,7 @@ public class BookControllerTest {
 
     @BeforeEach
     void setUp() {
-        book = new Book();
-        book.setTitle("The Lord of the Rings");
-        book.setAuthor("JGeorge R.R. Martin");
-        book.setIsbn("9788845292613");
-        book.setPrice(BigDecimal.valueOf(20));
+        book = TestDataHelper.getBookSecond();
     }
 
     @BeforeAll
@@ -62,11 +58,8 @@ public class BookControllerTest {
             "classpath:db/book/remove_book_after_create.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createBook_CreateBookRequestDto_ReturnSaveBook() throws Exception {
-        CreateBookRequestDto bookDto = new CreateBookRequestDto();
-        bookDto.setTitle(book.getTitle());
-        bookDto.setAuthor(book.getAuthor());
+        CreateBookRequestDto bookDto = TestDataHelper.getCreateBookDto();
         bookDto.setIsbn("9788845292611");
-        bookDto.setPrice(book.getPrice());
 
         String jsonCreateBookDto = objectMapper.writeValueAsString(bookDto);
 
@@ -142,11 +135,8 @@ public class BookControllerTest {
             "classpath:db/book/return_book_after_update.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateBook_CorrectId_ReturnUpdateBookDto() throws Exception {
-        CreateBookRequestDto bookDto = new CreateBookRequestDto();
-        bookDto.setTitle(book.getTitle());
-        bookDto.setAuthor(book.getAuthor());
+        CreateBookRequestDto bookDto = TestDataHelper.getCreateBookDto();
         bookDto.setIsbn("9782845492616");
-        bookDto.setPrice(book.getPrice());
 
         String jsonCreateBookDto = objectMapper.writeValueAsString(bookDto);
 
@@ -169,11 +159,7 @@ public class BookControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @DisplayName("Book update if the id is incorrect, should be returned exception message")
     void updateBook_InCorrectId_ReturnExceptionMessage() throws Exception {
-        CreateBookRequestDto bookDto = new CreateBookRequestDto();
-        bookDto.setTitle(book.getTitle());
-        bookDto.setAuthor(book.getAuthor());
-        bookDto.setIsbn("9782845492616");
-        bookDto.setPrice(book.getPrice());
+        CreateBookRequestDto bookDto = TestDataHelper.getCreateBookDto();
 
         String jsonCreateBookDto = objectMapper.writeValueAsString(bookDto);
 

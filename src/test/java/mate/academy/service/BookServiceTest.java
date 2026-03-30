@@ -1,5 +1,6 @@
 package mate.academy.service;
 
+import mate.academy.TestDataHelper;
 import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.BookDtoWithoutCategory;
 import mate.academy.dto.book.CreateBookRequestDto;
@@ -18,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,24 +44,9 @@ public class BookServiceTest {
 
     @BeforeEach
     void setUp() {
-        book = new Book();
-        book.setTitle("1984");
-        book.setAuthor("George Orwell");
-        book.setIsbn("9783844908213");
-        book.setPrice(BigDecimal.valueOf(15.50));
-
-        bookDto = new BookDto();
-        bookDto.setId(book.getId());
-        bookDto.setTitle(book.getTitle());
-        bookDto.setAuthor(book.getAuthor());
-        bookDto.setIsbn(book.getIsbn());
-        bookDto.setPrice(book.getPrice());
-
-        createBookRequestDto = new CreateBookRequestDto();
-        createBookRequestDto.setTitle("The Lord of the Rings");
-        createBookRequestDto.setAuthor("JGeorge R.R. Martin");
-        createBookRequestDto.setIsbn("9788845292613");
-        createBookRequestDto.setPrice(BigDecimal.valueOf(20.00));
+        book = TestDataHelper.getBook();
+        bookDto = TestDataHelper.getBookDto();
+        createBookRequestDto = TestDataHelper.getCreateBookDto();
     }
 
     @Test

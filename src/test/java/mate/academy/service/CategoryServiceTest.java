@@ -1,5 +1,6 @@
 package mate.academy.service;
 
+import mate.academy.TestDataHelper;
 import mate.academy.dto.category.CategoryDto;
 import mate.academy.dto.category.CreateCategoryDto;
 import mate.academy.exception.EntityNotFoundException;
@@ -43,18 +44,9 @@ public class CategoryServiceTest {
 
     @BeforeEach
     void setUp() {
-        category = new Category();
-        category.setName("Fantasy");
-        category.setDescription("Fantasy books");
-
-        categoryDto = new CategoryDto();
-        categoryDto.setId(category.getId());
-        categoryDto.setName(category.getName());
-        categoryDto.setDescription(category.getDescription());
-
-        createCategoryDto = new CreateCategoryDto();
-        createCategoryDto.setName("Detective");
-        createCategoryDto.setDescription("Detective book");
+        category = TestDataHelper.getCategory();
+        categoryDto = TestDataHelper.getCategoryDto();
+        createCategoryDto = TestDataHelper.getCreateCategoryDto();
     }
 
     @Test

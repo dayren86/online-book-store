@@ -3,6 +3,7 @@ package mate.academy.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import mate.academy.TestDataHelper;
 import mate.academy.dto.category.CategoryDto;
 import mate.academy.dto.category.CreateCategoryDto;
 import mate.academy.model.Category;
@@ -39,9 +40,7 @@ public class CategoryControllerTest {
 
     @BeforeEach
     void setUp() {
-        category = new Category();
-        category.setName("Fantasy");
-        category.setDescription("Fantasy books");
+        category = TestDataHelper.getCategory();
     }
 
     @BeforeAll
@@ -59,9 +58,7 @@ public class CategoryControllerTest {
             "classpath:db/category/remove_category_after_create.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void createCategory_CreateCategoryDto_ReturnSaveCategory() throws Exception {
-        CreateCategoryDto createCategoryDto = new CreateCategoryDto();
-        createCategoryDto.setName("Detective");
-        createCategoryDto.setDescription("Detective book");
+        CreateCategoryDto createCategoryDto = TestDataHelper.getCreateCategoryDto();
 
         String jsonCreateBookDto = objectMapper.writeValueAsString(createCategoryDto);
 
@@ -133,8 +130,7 @@ public class CategoryControllerTest {
             "classpath:db/category/return_category_after_update.sql"
     }, executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void updateCategory_CorrectId_ReturnUpdateCategoryDto() throws Exception {
-        CreateCategoryDto createCategoryDto = new CreateCategoryDto();
-        createCategoryDto.setName("Detective");
+        CreateCategoryDto createCategoryDto = TestDataHelper.getCreateCategoryDto();
 
         String jsonCreateBookDto = objectMapper.writeValueAsString(createCategoryDto);
 
@@ -154,8 +150,7 @@ public class CategoryControllerTest {
     @WithMockUser(authorities = "ADMIN")
     @DisplayName("Category update if the id is incorrect, should be returned exception message")
     void updateCategory_InCorrectId_ReturnExceptionMessage() throws Exception {
-        CreateCategoryDto createCategoryDto = new CreateCategoryDto();
-        createCategoryDto.setName("Detective");
+        CreateCategoryDto createCategoryDto = TestDataHelper.getCreateCategoryDto();
 
         String jsonCreateBookDto = objectMapper.writeValueAsString(createCategoryDto);
 
