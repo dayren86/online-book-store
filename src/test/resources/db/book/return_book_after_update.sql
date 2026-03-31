@@ -1,0 +1,1 @@
+UPDATE books SET isbn=9788845292613 WHERE id=2

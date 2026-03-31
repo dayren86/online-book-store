@@ -1,0 +1,1 @@
+UPDATE categories SET name='Fantasy', description='Fantasy books' WHERE id=2
