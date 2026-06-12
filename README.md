@@ -3,6 +3,8 @@
 
 A program for buying books. To use the program, you must first register and log in. You will have a shopping cart where you can add books and specify the quantity. You can also complete your purchase, view the total cost, and enter a shipping address.
 
+---
+
 ## Tech Stack
 
 **Java 17**\
@@ -12,7 +14,11 @@ A program for buying books. To use the program, you must first register and log 
 **Liquibase 4.31.1**\
 **JWT Auth**
 
+---
+
 ## API Reference
+**After launching the application, you can view all endpoints at the link**\
+http://localhost:8080/swagger-ui/index.html
 ```
   User registration and login api: /auth
 ```
@@ -63,9 +69,32 @@ A program for buying books. To use the program, you must first register and log 
 | `GET`    | `{orderId}/items/{id}`      | **Get specific item from order by id** |
 | `Patch` | `/orders/{id}`      | **Update order status** |
 
+---
+
 ## Entities Structure
 
 ![uml.png](uml.png)
+
+---
+
+## Launching the application
+
+1. Create a folder, go to it and save the project using the link\
+   https://github.com/dayren86/online-book-store.git \
+   or command:
+```aiignore
+  git clone https://github.com/dayren86/online-book-store.git
+```
+2. Create a .env file and fill in [Environment Variables](#environment-variables)
+3. Create Jar file
+```
+  mvn clean package
+```
+4. Launch the app
+```
+  mvn spring-boot:run
+```
+---
 
 ## Environment Variables
 
@@ -83,3 +112,6 @@ To run this project, you will need to add the following environment variables to
 Start Containers
 
 `docker compose up --build`
+
+## Postman collection
+[BookStore.postman.json.json](BookStore.postman.json.json)
